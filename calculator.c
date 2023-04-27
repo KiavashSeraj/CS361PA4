@@ -11,9 +11,16 @@ Submitted on: 05/01/2023
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/msg.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
 /* -------------------------------------------------------------------*/
 int main(int argc, char *argv[])
 {
+
+    int sockfd = socket(AF_INET, SOCK_DGRAM, 0); // SOCK_DGRAM for UDP
+
     int req_write_fd = atoi(argv[0]);
     int rep_read_fd = atoi(argv[1]);
     printf("This is the Calculator process (id = %d).\t\n", getpid());
