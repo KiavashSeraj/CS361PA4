@@ -54,18 +54,20 @@ int main(int argc, char *argv[])
     }
 
     calcMsg message;
+    char fullName[125];
 
     // read myName.txt
     FILE *fp = fopen("myName.txt", "r");
-    fgets(message.fullName, 125, fp);
+    fgets(fullName, 125, fp);
     fclose(fp);
 
     // Remove newline character if present
-    size_t len = strlen(message.fullName);
-    if (len > 0 && message.fullName[len - 1] == '\n')
+    size_t len = strlen(fullName);
+    if (len > 0 && fullName[len - 1] == '\n')
     {
-        message.fullName[len - 1] = '\0';
+        fullName[len - 1] = '\0';
     }
+    strncpy(message.fullName, fullName, sizeof(message.fullName) - 1);
 
     // assign message type
     message.msgType = 1;
@@ -82,15 +84,21 @@ int main(int argc, char *argv[])
     printf("Attempting Calculator server at '%s' : %d\n", ip_address, port);
 
     printf("User %s sent this message to the Calculator : ", message.fullName);
-    message.fullName += "-User";
+    char userMsg[130];
+    char calcMsg[130];
+
+    snprintf(userMsg, sizeof(userMsg), "%s-User", fullName);
+    strncpy(message.fullName, userMsg, sizeof(message.fullName) - 1);
     printMsg(stdout, &message);
-    // message.fullName = message.fullName[]
+    strncpy(message.fullName, fullName, sizeof(message.fullName) - 1);
     printf("\n");
 
     printf("User is now waiting to receive result ...\n");
     printf("User %s received this message from the Calculator server: ", message.fullName);
-    message.fullName += "-Calculator";
+    snprintf(calcMsg, sizeof(calcMsg), "%s-Calc", fullName);
+    strncpy(message.fullName, calcMsg, sizeof(message.fullName) - 1);
     printMsg(stdout, &message);
+    strncpy(message.fullName, fullName, sizeof(message.fullName) - 1);
     printf("\n");
     int result;
 
