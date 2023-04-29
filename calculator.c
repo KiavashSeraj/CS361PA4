@@ -57,3 +57,4 @@ int main(int argc, char *argv[])
     };
 
     printf("Calculator sent the following to the User: %d on FD %d\n", result, rep_read_fd);
+}
