@@ -16,15 +16,75 @@ Submitted on: 05/01/2023
 #include <arpa/inet.h>
 #include <netinet/in.h>
 /* -------------------------------------------------------------------*/
+
+#define MAXBUFLEN 256
+#define IPSTRLEN 50
+typedef struct sockaddr SA ;
+/*------------------------------------------------------------------------
+* Error Handling Functions
+*----------------------------------------------------------------------*/
+void err_sys(const char* msg)
+{
+    fflush( stderr ) ;
+    perror( msg ) ;
+    exit( 1 );
+}
+
+
 int main(int argc, char *argv[])
 {
 
-    int sockfd = socket(AF_INET, SOCK_DGRAM, 0); // SOCK_DGRAM for UDP
+    struct sockaddr_in serverSocket, clientSocket;
+    unsigned short port = 13;
+    time_t now;
+    char buf[ MAXBUFLEN ];
+    char ipAddress[ IPSTRLEN ];
+    char timeStr[MAXBUFLEN ];
 
-    int req_write_fd = atoi(argv[0]);
-    int rep_read_fd = atoi(argv[1]);
-    printf("This is the Calculator process (id = %d).\t\n", getpid());
-    printf("Calculator waiting to receive from FD %d\n", req_write_fd);
+    unsigned int addressLength;
+
+
+    int socketfd = socket(AF_INET, SOCK_DGRAM, 0); // SOCK_DGRAM for UDP
+    if (socketfd < 0) {
+        err_sys("Could NOT create socket\n");
+    }
+
+    // Prepare the server's socket address structure
+    memset((void *)&serverSocket, 0, sizeof(serverSocket));
+    serverSocket.sin_family = AF_INET;
+    serverSocket.sin_addr.s_addr = htonl(INADDR_ANY);
+    serverSocket.sin_port = htons(port);
+
+    printf("\nThis is the Calculator server developed by Kiavash Seraj & Mateen Faieq\n");
+    
+    if ( bind(socketfd, (SA *)&serverSocket, sizeof(serverSocket)) < 0 ) {
+        snprintf( buf, MAXBUFLEN, "Could NOT bind to port %d\n", port);
+        err_sys(buf);
+    }
+
+    inet_ntop (AF_INET, (void *)&serverSocket.sin_addr.s_addr, ipAddress, IPSTRLEN);
+    printf("\nBound socket %d to IP %s Port %d\n", sd, ipAddress, ntohs(serverSocket.sin_port));
+    
+
+    while(1) {
+        addressLength = sizeof(clientSocket);
+        printf("\nCALCULATOR server waiting for Requests\n");
+
+        if (recvfrom(socketfd, buf, MAXBUFLEN, 0, (SA *) &clientSocket, &addressLength) < 0){
+            err_sys("recvfrom");
+        }
+
+        printf("CALCULATOR server recieved: { Name=~~~~~~~~~}\n");
+
+    }
+
+
+
+
+
+
+
+
 
     int num1;
     char op;
