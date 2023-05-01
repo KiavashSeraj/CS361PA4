@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     char timeStr[MAXBUFLEN ];
 
     calcMsg received_message;
-    ssize_t received_len
+    ssize_t received_len;
 
     unsigned int addressLength;
 
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     }
 
     inet_ntop (AF_INET, (void *)&serverSocket.sin_addr.s_addr, ipAddress, IPSTRLEN);
-    printf("\nBound socket %d to IP %s Port %d\n", sd, ipAddress, ntohs(serverSocket.sin_port));
+    printf("\nBound socket %d to IP %s Port %d\n", socketfd, ipAddress, ntohs(serverSocket.sin_port));
     
 
     while(1) {
