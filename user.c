@@ -85,11 +85,11 @@ int main(int argc, char *argv[])
     }
 
     printf("User %s sent this message to the Calculator : ", message.fullName);
-    char userMsg[130];
-    char calcMsg[130];
+    char user_msg[130];
+    char calc_msg[130];
 
-    snprintf(userMsg, sizeof(userMsg), "%s-User", fullName);
-    strncpy(message.fullName, userMsg, sizeof(message.fullName) - 1);
+    snprintf(user_msg, sizeof(user_msg), "%s-User", fullName);
+    strncpy(message.fullName, user_msg, sizeof(message.fullName) - 1);
     printMsg(stdout, &message);
     strncpy(message.fullName, fullName, sizeof(message.fullName) - 1);
     printf("\n");
@@ -99,6 +99,7 @@ int main(int argc, char *argv[])
     // Receive the result from the server
 
     calcMsg received_message;
+
     if (recvfrom(sockfd, (void *)&received_message, sizeof(received_message), 0, (struct sockaddr *)&srvrSkt, &srvrSktLen) < 0)
     {
         perror("recvfrom");
@@ -106,8 +107,8 @@ int main(int argc, char *argv[])
     }
 
     printf("User %s received this message from the Calculator server: ", received_message.fullName);
-    snprintf(calcMsg, sizeof(calcMsg), "%s-Calc", fullName);
-    strncpy(received_message.fullName, calcMsg, sizeof(received_message.fullName) - 1);
+    snprintf(calc_msg, sizeof(calc_msg), "%s-Calc", fullName);
+    strncpy(received_message.fullName, calc_msg, sizeof(received_message.fullName) - 1);
     printMsg(stdout, &received_message);
     strncpy(received_message.fullName, fullName, sizeof(received_message.fullName) - 1);
     printf("\n");

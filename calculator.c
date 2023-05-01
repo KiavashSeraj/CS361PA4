@@ -35,8 +35,6 @@ void err_sys(const char* msg)
 int main(int argc, char *argv[])
 {
 
-
-
     int num1;
     char op;
     int num2;
@@ -91,8 +89,7 @@ int main(int argc, char *argv[])
         received_message.num2 = ntohl(received_message.num2);
         received_message.operation = ntohl(received_message.operation);
         received_message.result = ntohl(received_message.result);
-        received_message.fullName = ntohl(received_message.fullName);
-
+        strncpy(received_message.fullName, received_message.fullName, 125);
         num1 = received_message.num1;
         num2 = received_message.num2;
         op = received_message.operation;
@@ -127,10 +124,10 @@ int main(int argc, char *argv[])
         send_message.num2 = num2;
         send_message.operation = op;
         send_message.result = result;
-        send_message.fullName = "Kiavash Seraj & Mateen Faieq-Calculator";
+        strncpy(send_message.fullName, "Kiavash Seraj & Mateen Faieq-Calculator", 125);
 
-        sendto(socketfd, (void *) &send_message, sizeof(struct calcMsg), 0, (struct sockaddr *)&clientSocket, addressLength);
-        printf("Calculator sent this message to the client { Name='%s' Type=%d , %d %c %d , result=\t%d}\n"send_message.fullName, send_message.msgType, num1, op, num2, result);
+        sendto(socketfd, (void *) &send_message, sizeof(calcMsg), 0, (struct sockaddr *)&clientSocket, addressLength);
+        printf("Calculator sent this message to the client { Name='%s' Type=%d , %d %c %d , result=\t%d}\n", send_message.fullName, send_message.msgType, num1, op, num2, result);
 
     }
 }
