@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
         op = received_message.operation;
 
         
-        printf("CALCULATOR server recieved: { Name='%s' Type=%d , %d %c %d , result=\t%d }\n");
+        printf("CALCULATOR server recieved: { Name='%s' Type=%d , %d %c %d , result=\t%d }\n", received_message.fullName, received_message.msgType, num1, op, num2, 0);
         inet_ntop(AF_INET, (void *) &clientSocket.sin_addr.s_addr, ipAddress, IPSTRLEN);
         printf("\tfrom IP %s port %d\n", ipAddress, ntohs(clientSocket.sin_port));
 
@@ -130,6 +130,7 @@ int main(int argc, char *argv[])
         send_message.fullName = "Kiavash Seraj & Mateen Faieq-Calculator";
 
         sendto(socketfd, (void *) &send_message, sizeof(struct calcMsg), 0, (struct sockaddr *)&clientSocket, addressLength);
+        printf("Calculator sent this message to the client { Name='%s' Type=%d , %d %c %d , result=\t%d}\n"send_message.fullName, send_message.msgType, num1, op, num2, result);
 
     }
 }
