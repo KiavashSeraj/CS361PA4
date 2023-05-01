@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     
 
     struct sockaddr_in serverSocket, clientSocket;
-    unsigned short port = 13;
+    unsigned short port = 50015;
     time_t now;
     char buf[ MAXBUFLEN ];
     char ipAddress[ IPSTRLEN ];
@@ -84,10 +84,10 @@ int main(int argc, char *argv[])
             err_sys("recvfrom");
         }
 
-        received_message.msgType = ntohl(received_message.msgType);
+        received_message.msgType = received_message.msgType;
         received_message.num1 = ntohl(received_message.num1);
         received_message.num2 = ntohl(received_message.num2);
-        received_message.operation = ntohl(received_message.operation);
+        received_message.operation = received_message.operation;
         received_message.result = ntohl(received_message.result);
         strncpy(received_message.fullName, received_message.fullName, 125);
         num1 = received_message.num1;

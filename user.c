@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     strncpy(message.fullName, fullName, sizeof(message.fullName) - 1);
 
     // assign message type
-    message.msgType = 1;
+    message.msgType = htonl(1);
     // assign operands
     message.num1 = htonl(num1);
     message.num2 = htonl(num2);
@@ -107,6 +107,13 @@ int main(int argc, char *argv[])
     }
 
     printf("User %s received this message from the Calculator server: ", received_message.fullName);
+    // convert values back to host byte order
+    received_message.msgType = ntohl(received_message.msgType);
+    received_message.num1 = ntohl(received_message.num1);
+    received_message.num2 = ntohl(received_message.num2);
+    received_message.result = ntohl(received_message.result);
+    
+
     snprintf(calc_msg, sizeof(calc_msg), "%s-Calc", fullName);
     strncpy(received_message.fullName, calc_msg, sizeof(received_message.fullName) - 1);
     printMsg(stdout, &received_message);
