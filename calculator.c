@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     
 
     struct sockaddr_in serverSocket, clientSocket;
-    unsigned short port = 50015;
+    unsigned short port = atoi(argv[1]);
     time_t now;
     char buf[ MAXBUFLEN ];
     char ipAddress[ IPSTRLEN ];
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
             err_sys("recvfrom");
         }
 
-        received_message.msgType = received_message.msgType;
+        received_message.msgType = ntohl(received_message.msgType);
         received_message.num1 = ntohl(received_message.num1);
         received_message.num2 = ntohl(received_message.num2);
         received_message.operation = received_message.operation;
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
         case '-':
             result = num1 - num2;
             break;
-        case '*':
+        case 'x':
             result = num1 * num2;
             break;
         case '/':
@@ -120,10 +120,10 @@ int main(int argc, char *argv[])
 
         calcMsg send_message;
         send_message.msgType = 2;
-        send_message.num1 = num1;
-        send_message.num2 = num2;
-        send_message.operation = op;
-        send_message.result = result;
+        send_message.num1 = htonl(num1);
+        send_message.num2 = htonl(num2);
+        send_message.operation = htonl(op);
+        send_message.result = htonl(result);
         strncpy(send_message.fullName, "Kiavash Seraj & Mateen Faieq-Calculator", 125);
 
         sendto(socketfd, (void *) &send_message, sizeof(calcMsg), 0, (struct sockaddr *)&clientSocket, addressLength);

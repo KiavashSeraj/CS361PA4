@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
 
     printf("User %s received this message from the Calculator server: ", received_message.fullName);
     // convert values back to host byte order
-    received_message.msgType = ntohl(received_message.msgType);
+    received_message.msgType = 2;
     received_message.num1 = ntohl(received_message.num1);
     received_message.num2 = ntohl(received_message.num2);
     received_message.result = ntohl(received_message.result);
